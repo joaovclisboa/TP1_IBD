@@ -1,5 +1,5 @@
 # Trabalho Prático 1 - Introdução a Bancos de Dados (TP1 - IBD)
-
+(readme gerado por IA)
 Este repositório contém a resolução do Trabalho Prático 1, focado no uso de Bancos de Dados Relacionais (SQLite) e na construção de consultas SQL a partir de especificações em Álgebra Relacional e Linguagem Natural.
 
 O tema principal do banco de dados abrange dados da área da saúde, incluindo hospitais, diagnósticos (CID-10), municípios, dados do IBGE, internações e mortalidades.
