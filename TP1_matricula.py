@@ -18,6 +18,7 @@
 NOME_ALUNO = "SEU NOME COMPLETO AQUI"
 MATRICULA_ALUNO = "SUA MATRÍCULA AQUI"
 
+
 # =============================================================================
 # CÓDIGO DE PREPARAÇÃO DO AMBIENTE (NÃO ALTERAR)
 # =============================================================================
@@ -79,120 +80,112 @@ LIMIT 5;
 # =============================================================================
 
 # A1
-query_a1 = """
--- CONSULTA SQL
-
+query_a1 = """SELECT CD_DESCRICAO FROM cid10 WHERE CID = 'A15';
 """
 
 # A2
-query_a2 = """
--- CONSULTA SQL
-
-"""
+query_a2 = """SELECT latitude, longitude
+FROM municipios
+WHERE nome = 'Porto Alegre'"""
 
 # A3
-query_a3 = """
--- CONSULTA SQL
-
-"""
+query_a3 = """SELECT NOME_PROC
+FROM procedimentos
+where PROC_REA = '101010010';"""
 
 # A4
-query_a4 = """
--- CONSULTA SQL
-
-"""
+query_a4 = """SELECT N_AIH, CD_DESCRICAO
+FROM internacoes
+JOIN cid10 ON DIAG_PRINC = CID
+WHERE CNES = '2234416';"""
 
 # A5
-query_a5 = """
--- CONSULTA SQL
-
-"""
+query_a5 = """SELECT nome, populacao
+FROM municipios
+JOIN dado_ibge on codigo_ibge = codigo_municipio_completo
+WHERE estado = 'RS';"""
 
 # =============================================================================
 # Consultas baseadas em Linguagem Natural
 # =============================================================================
 
 # B1. Quantas internações foram registradas no total?
-query_b1 = """
--- CONSULTA SQL
+query_b1 = """SELECT COUNT(*)
+FROM internacoes"""
 
-"""
 
 # B2. Qual a idade média dos pacientes internados?
-query_b2 = """
--- CONSULTA SQL
-
-"""
+query_b2 = """SELECT AVG(IDADE)
+FROM internacoes"""
 
 # B3. Quantos municípios estão no estado do RS?
-query_b3 = """
--- CONSULTA SQL
-
-"""
+query_b3 = """SELECT COUNT(*)
+FROM municipios
+WHERE estado = 'RS'"""
 
 # B4. Quantos casos de VDRL positivo foram registrados?
-query_b4 = """
--- CONSULTA SQL
-
-"""
+query_b4 = """SELECT COUNT(*)
+FROM condicoes_especificas
+WHERE IND_VDRL = '1'"""
 
 # B5. Quantas internações duraram mais de 30 dias?
-query_b5 = """
--- CONSULTA SQL
-
-"""
+query_b5 = """SELECT COUNT(*)
+FROM internacoes
+WHERE QT_DIARIAS > 30"""
 
 # B6. Qual a natureza, gestão e natureza jurídica do hospital com CNES '2234416'?
-query_b6 = """
--- CONSULTA SQL
-
-"""
+query_b6 = """SELECT NATUREZA, GESTAO, NAT_JUR
+FROM hospital
+where CNES = '2234416';"""
 
 # B7. Qual município tem a maior população segundo os dados do IBGE?
-query_b7 = """
--- CONSULTA SQL
-
-"""
+query_b7 = """SELECT nome_municipio
+FROM dado_ibge
+ORDER BY populacao DESC LIMIT 1"""
 
 # B8. Qual o diagnóstico mais comum nas internações?
-query_b8 = """
--- CONSULTA SQL
-
-"""
+query_b8 = """SELECT DIAG_PRINC, count(*)
+FROM internacoes
+GROUP BY DIAG_PRINC
+ORDER BY count(*) DESC LIMIT 1"""
 
 # B9. Quantas internações resultaram em óbito?
-query_b9 = """
--- CONSULTA SQL
-
-"""
+query_b9 = """SELECT COUNT(*)
+FROM mortes"""
 
 # B10. Quais as 10 principais causas de morte (com descrição)?
-query_b10 = """
--- CONSULTA SQL
-
-"""
+query_b10 = """SELECT CID, CD_DESCRICAO, count(*)
+FROM cid10
+JOIN mortes ON CID_MORTE = CID
+GROUP BY CID
+ORDER BY count(*) DESC LIMIT 10"""
 
 # =============================================================================
 # Consultas baseadas em Linguagem Natural - Desafios (1 ponto extra no total)
 # =============================================================================
 
 # C1. Quantos hospitais ficam em municípios com mais de 100 mil habitantes?
-query_c1 = """
--- CONSULTA SQL
-
-"""
+query_c1 = """SELECT COUNT(DISTINCT i.CNES)
+FROM internacoes i
+JOIN municipios m ON i.MUNIC_RES = m.codigo_6d
+JOIN dado_ibge d ON m.codigo_ibge = d.codigo_municipio_completo
+WHERE d.populacao > 100;"""
 
 # C2. Quais hospitais tiveram mais de 1000 internações registradas?
-query_c2 = """
--- CONSULTA SQL
-
-"""
+query_c2 = """SELECT CNES
+FROM internacoes
+GROUP BY CNES
+HAVING COUNT(*) > 1000;"""
 
 # C3. Quais são as três causas de morte mais frequentes entre mulheres?
-query_c3 = """
--- CONSULTA SQL
-
-"""
+query_c3 = """SELECT c.CID, c.CD_DESCRICAO, COUNT(*)
+FROM internacoes i
+JOIN mortes m ON i.N_AIH = m.N_AIH
+JOIN cid10 c ON m.CID_MORTE = c.CID
+WHERE i.SEXO = 3
+GROUP BY c.CID, c.CD_DESCRICAO
+ORDER BY COUNT(*) DESC
+LIMIT 3;"""
 
 
 # =============================================================================
